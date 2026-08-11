@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import RootLayout from "./root-layout";
 import AuthenticatedLayout from "./authenticated-layout";
+import LandingPage from "./landing-page";
 import RegisterForm from "../features/auth/components/RegisterForm";
 import LoginForm from "../features/auth/components/LoginForm";
 import Index from "../features/mint-operations/components/Index";
@@ -20,7 +21,7 @@ const rootRoute = createRootRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: () => <div>Welcome to Uyum</div>,
+  component: LandingPage,
 });
 
 const registerRoute = createRoute({

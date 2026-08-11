@@ -1,75 +1,56 @@
-# React + TypeScript + Vite
+# Uyum
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live demo:** [uyum-web.onrender.com](https://uyum-web.onrender.com)
 
-Currently, two official plugins are available:
+Uyum lets someone pay with a debit/credit card and receive the equivalent value as UYUM tokens in a crypto wallet: submit card details + amount + wallet address, the backend charges the card and mints tokens once the charge clears. This repo is the frontend for that flow — account creation/login, submitting a mint request, and checking its status and history.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What this is
 
-## React Compiler
+This project is an experiment mimicking the real-world behavior of a stablecoin. **UYUM** is a token we created ourselves, deployed on the **Celo Sepolia testnet**:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Smart contract on Celo Sepolia: [`0x0520F31085F7009681146002EFB9d555c30754AC`](https://celo-sepolia.blockscout.com/address/0x0520F31085F7009681146002EFB9d555c30754AC)
+- Contract source: [github.com/sebasdeldi/uyum-contract](https://github.com/sebasdeldi/uyum-contract)
 
-## Expanding the ESLint configuration
+This application lets you mint UYUM tokens **1:1 with the Colombian peso (COP)**, by processing the card charge through [Wompi](https://wompi.com/es/co/), a Colombian payment processor.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Important:** the payment integration used here runs against Wompi's *test* environment. That means the app reflects the real flow and lifecycle of an actual monetary transaction — validation, processing, success/failure states — using Wompi's test cards, without moving any real money.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Related repositories
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Repo | What it is |
+| --- | --- |
+| [`uyum-web`](.) (this repo) | Frontend — React + TypeScript |
+| [`uyum-core`](https://github.com/sebasdeldi/uyum-core) | Backend — NestJS API, auth, payment processing, minting |
+| [`uyum-contract`](https://github.com/sebasdeldi/uyum-contract) | The UYUM ERC-20 smart contract (Celo Sepolia testnet) |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Local development
 
-```
+1. **Clone and install dependencies:**
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+   ```sh
+   git clone <this-repo-url>
+   cd uyum-web
+   npm install
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2. **Set up environment variables** — copy `.env.example` to `.env`:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+   ```sh
+   cp .env.example .env
+   ```
 
-```
+   By default this points at a locally running backend on `http://localhost:3000`.
+
+3. **Run the backend** — this app needs [`uyum-core`](https://github.com/sebasdeldi/uyum-core) running locally (with Postgres + Redis, see that repo's own README for setup). Its CORS allowlist needs to include this app's dev server origin (`http://localhost:5173` by default) — check `uyum-core`'s `.env` if you hit CORS errors.
+
+4. **Start the dev server:**
+
+   ```sh
+   npm run dev
+   ```
+
+   The app will be available at `http://localhost:5173`.
+
+## Stack
+
+Vite + React + TypeScript, TanStack Router, TanStack Query, Zustand, TanStack Form + Zod, antd, axios. See [`CLAUDE.md`](./CLAUDE.md) for the full architecture notes and working conventions for this repo.
