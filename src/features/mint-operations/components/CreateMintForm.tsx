@@ -7,6 +7,7 @@ import {
   Space,
   Typography,
 } from "antd";
+import { Link } from "@tanstack/react-router";
 import { useCreateMintForm } from "../hooks/UseCreateMintForm";
 import styles from "./createMintForm.module.css";
 
@@ -228,6 +229,11 @@ function CreateMintForm() {
           </Space>
         </form>
       </Card>
+      <Typography.Paragraph
+        style={{ width: "100%", maxWidth: 480, marginTop: 16 }}
+      >
+        <Link to="/mint-operations">Back to operations</Link>
+      </Typography.Paragraph>
     </div>
   );
 }

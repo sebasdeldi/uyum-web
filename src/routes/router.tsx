@@ -11,6 +11,7 @@ import LoginForm from "../features/auth/components/LoginForm";
 import Index from "../features/mint-operations/components/Index";
 import { useAuthStore } from "../store/auth-store";
 import MintOperationRoute from "../features/mint-operations/components/MintOperationRoute";
+import CreateMintForm from "../features/mint-operations/components/CreateMintForm";
 
 const rootRoute = createRootRoute({
   component: RootLayout,
@@ -52,6 +53,12 @@ const mintOperationsRoute = createRoute({
   component: Index,
 });
 
+const newMintOperationsRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: "/mint-operations/new",
+  component: CreateMintForm,
+});
+
 const mintOperationRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: "/mint-operation/$id",
@@ -62,7 +69,11 @@ const routeTree = rootRoute.addChildren([
   indexRoute,
   registerRoute,
   loginRoute,
-  authenticatedRoute.addChildren([mintOperationsRoute, mintOperationRoute]),
+  authenticatedRoute.addChildren([
+    mintOperationsRoute,
+    mintOperationRoute,
+    newMintOperationsRoute,
+  ]),
 ]);
 
 export const router = createRouter({ routeTree });

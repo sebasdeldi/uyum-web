@@ -1,25 +1,12 @@
 import { Card, Descriptions, Spin, Tag, Typography } from "antd";
 import { Link } from "@tanstack/react-router";
 import { useMintOperationInfo } from "../hooks/UseMintOperationInfo";
+import { statusColor, paymentStatusColor } from "../statusColors";
 import styles from "./mintOperationInfo.module.css";
 
-const statusColor: Record<string, string> = {
-  PENDING: "processing",
-  COMPLETED: "success",
-  FAILED: "error",
-};
-
-const paymentStatusColor: Record<string, string> = {
-  INITIATED: "processing",
-  PENDING: "processing",
-  APPROVED: "success",
-  DECLINED: "error",
-  VOIDED: "warning",
-  ERROR: "error",
-};
-
 function MintOperationInfo({ id }: { id: string }) {
-  const { mintOperation, isLoading } = useMintOperationInfo(id);
+  const { mintOperation, isLoading } =
+    useMintOperationInfo(id);
 
   if (isLoading) {
     return (
