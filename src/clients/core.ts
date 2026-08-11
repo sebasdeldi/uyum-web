@@ -25,6 +25,22 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const isAuthEndpoint = error.config?.url?.startsWith("/auth");
+    if (
+      axios.isAxiosError(error) &&
+      error.response?.status === 401 &&
+      !isAuthEndpoint
+    ) {
+      useAuthStore.getState().clearToken();
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  },
+);
+
 export async function register(
   data: RegisterPayload,
 ): Promise<RegisterResponse> {

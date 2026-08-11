@@ -5,10 +5,12 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import RootLayout from "./root-layout";
+import AuthenticatedLayout from "./authenticated-layout";
 import RegisterForm from "../features/auth/components/RegisterForm";
 import LoginForm from "../features/auth/components/LoginForm";
 import Index from "../features/mint-operations/components/Index";
 import { useAuthStore } from "../store/auth-store";
+import MintOperationRoute from "../features/mint-operations/components/MintOperationRoute";
 
 const rootRoute = createRootRoute({
   component: RootLayout,
@@ -35,6 +37,7 @@ const loginRoute = createRoute({
 const authenticatedRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "authenticated",
+  component: AuthenticatedLayout,
   beforeLoad: () => {
     const token = useAuthStore.getState().token;
     if (!token) {
@@ -49,11 +52,17 @@ const mintOperationsRoute = createRoute({
   component: Index,
 });
 
+const mintOperationRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: "/mint-operation/$id",
+  component: MintOperationRoute,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   registerRoute,
   loginRoute,
-  authenticatedRoute.addChildren([mintOperationsRoute]),
+  authenticatedRoute.addChildren([mintOperationsRoute, mintOperationRoute]),
 ]);
 
 export const router = createRouter({ routeTree });

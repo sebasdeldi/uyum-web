@@ -21,7 +21,7 @@ If a field, endpoint, or status value mentioned below doesn't match what's actua
 
 ### How the backend works (snapshot — verify against source per above)
 
-**Auth** — email/password, bcrypt-hashed. Login returns a JWT (1h expiry) sent as `Authorization: Bearer <token>` on every protected request. No refresh tokens — when it expires, the user logs in again.
+**Auth** — email/password, bcrypt-hashed. Login returns a JWT sent as `Authorization: Bearer <token>` on every protected request. As of 2026-08-11, no expiry is configured on the token (`JwtModule.register` in `auth.module.ts` has no `signOptions.expiresIn`) — this may change, so verify against source rather than assuming either way. No refresh tokens regardless — if a token is ever rejected as invalid (401 on a non-auth endpoint), the frontend clears it and sends the user back to login rather than trying to silently renew it.
 
 | Endpoint              | Notes                                                            |
 | --------------------- | ---------------------------------------------------------------- |

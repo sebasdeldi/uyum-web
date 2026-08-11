@@ -1,0 +1,23 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  /* colors.surface from design.md — see index.css for why this is a
+     hardcoded hex rather than read from a JS token */
+  background-color: #ffffff;
+  /* boxShadowTertiary from design.md's Elevation & Depth section — the
+     nav bar is fixed and content scrolls beneath it, so per design.md's
+     own rule ("shadows only on surfaces that genuinely float above their
+     context"), this is a shadow case, not a flat border */
+  box-shadow:
+    0 1px 2px 0 rgba(0, 0, 0, 0.05),
+    0 1px 6px -1px rgba(0, 0, 0, 0.03),
+    0 2px 4px 0 rgba(0, 0, 0, 0.03);
+}

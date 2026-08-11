@@ -1,9 +1,7 @@
+import CreateMintForm from "./CreateMintForm";
+
 function Index() {
-  return (
-    <>
-      DASHBOARD
-    </>
-  )
+  return <CreateMintForm />;
 }
 
 export default Index;
